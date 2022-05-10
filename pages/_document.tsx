@@ -5,7 +5,6 @@ export default class MyDocument extends Document {
         return (
             <Html>
                 <Head>
-                    <title>title of project</title>
                 </Head>
                 <body>
                     <Main />

@@ -1,10 +1,16 @@
 import { FormEvent, useState } from "react"
 import { SearchResults } from "./components/SearchResults";
 
+type Product = { 
+  id: number, 
+  price: number, 
+  title: string
+}
+
 export default function Home() {
   
   const [search, setSearch] = useState('');
-  const [results, setResults] = useState([]);
+  const [results, setResults] = useState<Product[]>([]);
 
   async function submitHandle(event: FormEvent) {
     
