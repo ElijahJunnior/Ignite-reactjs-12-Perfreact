@@ -6,10 +6,11 @@ type SearchResultsProps = {
     id: number, 
     price: number, 
     title: string
-  }>
+  }>, 
+  onAddToWishList: (id: number) => void
 }
 
-export function SearchResults({ results }: SearchResultsProps) { 
+export function SearchResults({ results, onAddToWishList }: SearchResultsProps) { 
 
   // O useMemo evita que o totalPrice seja recalculado sempre 
   // que o componente é renderizado novamente. O recalculo 
@@ -25,7 +26,11 @@ export function SearchResults({ results }: SearchResultsProps) {
       <h2>Valor total dos  produtos: {totalPrice}</h2>
       {
         results.map(product => (
-          <ProductItem key={product.id} product={product} />
+          <ProductItem 
+            key={product.id} 
+            product={product} 
+            onAddToWishList={onAddToWishList}
+          />
         ))
       }
     </div>

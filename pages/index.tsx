@@ -24,6 +24,10 @@ export default function Home() {
 
   }
 
+  async function addToWishList(id: number) { 
+    console.log(`O produto ID: ${id} foi adicionado a lista de desejos.`)
+  }
+
   return (
     <div>
         <h1>Search</h1>
@@ -37,7 +41,10 @@ export default function Home() {
             Buscar
           </button>
         </form>
-        <SearchResults results={results} />
+        <SearchResults 
+          results={results} 
+          onAddToWishList={addToWishList}
+        />
     </div>
   )
 
