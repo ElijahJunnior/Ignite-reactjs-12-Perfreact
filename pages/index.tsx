@@ -1,4 +1,4 @@
-import { FormEvent, useState } from "react"
+import { FormEvent, useCallback, useState } from "react"
 import { SearchResults } from "./components/SearchResults";
 
 type Product = { 
@@ -30,9 +30,15 @@ export default function Home() {
 
   }
 
-  async function addToWishList(id: number) { 
-    console.log(`O produto ID: ${id} foi adicionado a lista de desejos.`)
-  }
+  const addToWishList = useCallback(
+    // função que vai ser sempre armazenada no mesmo enderço de memoria
+    async (id: number) => { 
+      console.log(`O produto ID: ${id} foi adicionado a lista de desejos.`)
+    }, 
+    // lista de dependencias, ou seja, variaveis do componente pai 
+    // que vão ser usadas dentro de função tratada pelo useCallback
+    []
+  ) 
 
   return (
     <div>
