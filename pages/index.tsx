@@ -4,13 +4,22 @@ import { SearchResults } from "./components/SearchResults";
 type Product = { 
   id: number, 
   price: number, 
+  priceFormated: string, 
   title: string
+}
+
+type Results = { 
+  products: Product[], 
+  totalPrice: number
 }
 
 export default function Home() {
   
   const [search, setSearch] = useState('');
-  const [results, setResults] = useState<Product[]>([]);
+  const [results, setResults] = useState<Results>({
+    products: [], 
+    totalPrice: 0}
+  );
 
   async function submitHandle(event: FormEvent) {
     
@@ -26,7 +35,25 @@ export default function Home() {
 
     const data = await response.json();
 
-    setResults(data);
+    const formatter = new Intl.NumberFormat('pt-BR', {
+      style: 'currency', 
+      currency: 'BRL'
+    })
+
+    const products = data.map(product => {
+      return { 
+        id: product.id, 
+        price: product.price, 
+        title: product.title, 
+        priceFormated: formatter.format(product.price)
+      }
+    })
+
+    const totalPrice = data.reduce((acc, cur ) => { 
+      return acc + cur.price
+    }, 0) 
+
+    setResults({totalPrice, products});
 
   }
 
@@ -42,21 +69,22 @@ export default function Home() {
 
   return (
     <div>
-        <h1>Search</h1>
-        <form onSubmit={submitHandle}>
-          <input
-            type="text" 
-            value={search} 
-            onChange={(event) => setSearch(event.target.value)}
-          />
-          <button type="submit">
-            Buscar
-          </button>
-        </form>
-        <SearchResults 
-          results={results} 
-          onAddToWishList={addToWishList}
+      <h1>Search</h1>
+      <form onSubmit={submitHandle}>
+        <input
+          type="text" 
+          value={search} 
+          onChange={(event) => setSearch(event.target.value)}
         />
+        <button type="submit">
+          Buscar
+        </button>
+      </form>
+      <SearchResults 
+        products={results.products} 
+        totalPrice={results.totalPrice}
+        onAddToWishList={addToWishList}
+      />
     </div>
   )
 
