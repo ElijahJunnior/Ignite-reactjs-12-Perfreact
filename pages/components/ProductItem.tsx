@@ -1,4 +1,5 @@
-import { memo } from "react"
+import { memo, useState } from "react"
+import { AddProductToWishList } from "./AddProductToWishList"
 
 type ProductItemProps = { 
   product: { 
@@ -11,16 +12,27 @@ type ProductItemProps = {
 }
 
 function ProductItemComponent({ product, onAddToWishList } : ProductItemProps) {
+
+  const [addingProductToWishList, setAddingProductToWishList] = useState(false);
+
   return (
     <div>
       {product.title} - <strong>{product.priceFormated}</strong>
       <button 
-        onClick={() => onAddToWishList(product.id)}
+        onClick={() => setAddingProductToWishList(true)}
       >
         Add to Wish List
       </button>
+      {
+        addingProductToWishList && 
+          <AddProductToWishList 
+            onAddToWishList={() => onAddToWishList(product.id)} 
+            onRequestClose={() => setAddingProductToWishList(false)}
+          />
+      }
     </div>
   )
+
 }
 
 // usando a função memo para evitar que o componente 
